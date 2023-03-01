@@ -181,11 +181,16 @@
                 android:layout_marginTop="20dp"
                 />
 
-            <EditText
-                android:layout_width="match_parent"
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:id="@+id/time"/>
+                android:background="?android:attr/selectable"
+                android:text="Set Time"
+                android:textAllCaps="false"
+                android:textColor="@color/gray"
+                android:textSize="16sp"
+                android:id="@+id/btn_time" />
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -194,16 +199,11 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/white"
-                android:id="@+id/done"/>
+                android:id="@+id/btn_save"/>
 
 
 
         </LinearLayout>
-
-        
     </ScrollView>
-
-
-
 
 </LinearLayout>
