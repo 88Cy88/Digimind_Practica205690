@@ -21,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logobrain" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/design_default_color_primary" />
+
     </application>
 
 </manifest>
