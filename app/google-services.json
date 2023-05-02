@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "635054574307",
+    "project_id": "mydigimind-f734f",
+    "storage_bucket": "mydigimind-f734f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635054574307:android:d4584e641abeaab607d3d6",
+        "android_client_info": {
+          "package_name": "sauceda.carlos.mydigimind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635054574307-6l50eirtaqoctmtcee4paanuo1lamnus.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcNenZoWwJuZAvRc7UYDSaBzbvkKLRdaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635054574307-6l50eirtaqoctmtcee4paanuo1lamnus.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

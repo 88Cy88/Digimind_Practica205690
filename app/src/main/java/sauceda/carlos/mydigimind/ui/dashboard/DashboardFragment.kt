@@ -6,24 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.FirebaseApp
 import sauceda.carlos.mydigimind.R
-import sauceda.carlos.mydigimind.ui.Task
-import sauceda.carlos.mydigimind.ui.home.HomeFragment
 import sauceda.carlos.mydigimind.databinding.FragmentDashboardBinding
 import java.text.SimpleDateFormat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 import java.util.*
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
+    private lateinit var usuario: FirebaseAuth
+    private lateinit var storage: FirebaseFirestore
 
     // This property is only valid between onCreateView and
     // onDestroyView.
+    private lateinit var dashboardViewModel: DashboardViewModel
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -31,11 +38,17 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        dashboardViewModel =ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard,container,false)
+        _binding = FragmentDashboardBinding.bind(root)
+        // Inicializar Firebase
+        //FirebaseApp.initializeApp(requireContext())
+        // Instanciar Firebase
+        storage = FirebaseFirestore.getInstance()
+        usuario = FirebaseAuth.getInstance()
 
         val btn_time: Button = root.findViewById(R.id.btn_time)
+
         btn_time.setOnClickListener {
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener{timePicker, hour, minute ->
@@ -46,35 +59,39 @@ class DashboardFragment : Fragment() {
             TimePickerDialog(root.context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),true).show()
         }
 
-            root.btn_save.setOnClickListener {
-            var titulo = et_task.text.toString()
-            var hora = btn_time.text.toString()
-            var dias= ArrayList<String>()
+        val btn_save = root.findViewById(R.id.btn_save) as Button
+        val et_titulo = root.findViewById(R.id.name) as EditText
+        val checkMonday = root.findViewById(R.id.monday) as CheckBox
+        val checkTuesday = root.findViewById(R.id.tuesday) as CheckBox
+        val checkWednesday = root.findViewById(R.id.wednesday) as CheckBox
+        val checkThursday = root.findViewById(R.id.thursday) as CheckBox
+        val checkFriday = root.findViewById(R.id.friday) as CheckBox
+        val checkSaturday = root.findViewById(R.id.saturday) as CheckBox
+        val checkSunday = root.findViewById(R.id.sunday) as CheckBox
 
-            if(checkMonday.isChecked)
-                dias.add("Monday")
-            if(checkTuesday.isChecked)
-                dias.add("Tuesday")
-            if(checkWednesday.isChecked)
-                dias.add("Wednesday")
-            if(checkThursday.isChecked)
-                dias.add("Thursday")
-            if(checkFriday.isChecked)
-                dias.add("Friday")
-            if(checkSaturday.isChecked)
-                dias.add("Saturday")
-            if(checkSunday.isChecked)
-                dias.add("Sunday")
+        btn_save.setOnClickListener{
 
-            var tarea= Actividad(titulo,dias,hora)
-            HomeFragment.actividades.add(tarea)
-            Toast.makeText(root.context,"New task added", Toast.LENGTH_SHORT).show()
+            var actividad = hashMapOf(
+                "actividad" to et_titulo.text.toString(),
+                "lu" to checkMonday.isChecked,
+                "ma" to checkTuesday.isChecked,
+                "mi" to checkWednesday.isChecked,
+                "ju" to checkThursday.isChecked,
+                "vi" to checkFriday.isChecked,
+                "sa" to checkSaturday.isChecked,
+                "do" to checkSunday.isChecked,
+                "tiempo" to btn_time.text.toString()
+            )
 
+            storage.collection("actividades")
+                .add(actividad)
+                .addOnSuccessListener { documentReference ->
+                    Toast.makeText(root.context, "Task added successfully.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(root.context, "Error while adding task.", Toast.LENGTH_SHORT).show()
+                }
+        }
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
